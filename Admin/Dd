@@ -1,0 +1,47 @@
+local scripts = {
+    {
+        url = "https://api.luarmor.net/files/v4/loaders/44412f0de7749c2587f1bd6a92a88243.lua",
+        restricted = false
+    },
+    {
+        url = "https://api.luarmor.net/files/v4/loaders/7d547923627ff4097fb605ff69e20df1.lua",
+        restricted = false
+    },
+    {
+        url = "https://example.com/scripts/newscript1.lua", -- URL baru
+        restricted = false
+    },
+    {
+        url = "https://example.com/scripts/newscript2.lua", -- hanya bisa di 2 placeid
+        restricted = {123456789, 987654321} -- ganti dengan placeid kamu
+    }
+}
+
+for _, script in ipairs(scripts) do
+    task.spawn(function()
+        -- cek kalau restricted
+        if script.restricted then
+            local allowed = false
+            for _, placeId in ipairs(script.restricted) do
+                if game.PlaceId == placeId then
+                    allowed = true
+                    break
+                end
+            end
+            if not allowed then
+                return
+            end
+        end
+
+        -- ambil & eksekusi script
+        local success, content = pcall(function()
+            return game:HttpGet(script.url)
+        end)
+
+        if success and content then
+            pcall(function()
+                loadstring(content)()
+            end)
+        end
+    end)
+end
