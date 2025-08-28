@@ -1,3 +1,5 @@
+--TradePlazaPro = 92458008626219
+--TradePlazaBasic = 16581637217
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local Client = require(ReplicatedStorage.Shared.Inventory.Client)
